@@ -3,9 +3,9 @@ package com.example.homework02_program1;
 public class SavedColor
 {
     //red, green, blue, hex, background, text color
-    private String red;
-    private String green;
-    private String blue;
+    private int red;
+    private int green;
+    private int blue;
     private String hex;
 
     public SavedColor()
@@ -13,7 +13,8 @@ public class SavedColor
 
     }
 
-    public SavedColor(String r, String g, String b, String h)
+    //overloaded constructor
+    public SavedColor(int r, int g, int b, String h)
     {
         red = r;
         green = g;
@@ -22,32 +23,32 @@ public class SavedColor
     }
 
     //getters and setters
-    public String getRed()
+    public int getRed()
     {
         return red;
     }
 
-    public void setRed(String r)
+    public void setRed(int r)
     {
         red = r;
     }
 
-    public String getGreen()
+    public int getGreen()
     {
         return green;
     }
 
-    public void setGreen(String g)
+    public void setGreen(int g)
     {
         green = g;
     }
 
-    public String getBlue()
+    public int getBlue()
     {
         return blue;
     }
 
-    public void setBlue(String b)
+    public void setBlue(int b)
     {
         blue = b;
     }
@@ -61,6 +62,4 @@ public class SavedColor
     {
         hex = h;
     }
-
-
 }

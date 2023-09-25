@@ -11,9 +11,11 @@ import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity
 {
-    //Variables
+    //GUI id variables
     TextView tv_j_red;
     TextView tv_j_green;
     TextView tv_j_blue;
@@ -23,15 +25,19 @@ public class MainActivity extends AppCompatActivity
     TextView tv_j_hex;
     Button btn_j_saveColor;
     ListView lv_j_colors;
-    String red;
-    String green;
-    String blue;
+
+    //Variables
+    int red;
+    int green;
+    int blue;
     String redHex;
     String greenHex;
     String blueHex;
     boolean isDarkRed;
     boolean isDarkGreen;
     boolean isDarkBlue;
+    ArrayList<SavedColor> listOfSavedColors;
+    SavedColorsListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -48,8 +54,12 @@ public class MainActivity extends AppCompatActivity
         sb_j_blue       = findViewById(R.id.sb_v_blue);
         tv_j_hex        = findViewById(R.id.tv_v_hex);
         btn_j_saveColor = findViewById(R.id.btn_v_saveColor);
+        lv_j_colors     = findViewById(R.id.lv_v_colors);
 
         //set default to white
+        red = 255;
+        green = 255;
+        blue = 255;
         redHex = "FF";
         greenHex = "FF";
         blueHex = "FF";
@@ -58,20 +68,39 @@ public class MainActivity extends AppCompatActivity
         isDarkGreen = false;
         isDarkBlue = false;
 
-        //function calls
+        //create list
+        listOfSavedColors = new ArrayList<SavedColor>();
+
+        //Event Handlers
         saveColorButtonEventHandler();
         redSeekbarEventHandler();
         greenSeekbarEventHandler();
         blueSeekbarEventHandler();
+
+        //display list
+        fillListView();
     }
 
     public void saveColorButtonEventHandler()
     {
-        btn_j_saveColor.setOnClickListener(new View.OnClickListener() {
+        btn_j_saveColor.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 //Log.d("Button Pressed","yes");
+
+                //create new saved color
                 SavedColor savedColor = new SavedColor(red, green, blue, redHex+greenHex+blueHex);
+
+                //add saved color to list
+                listOfSavedColors.add(savedColor);
+
+                //reset seekbars to default and background to white
+                resetView();
+
+                //update list
+                adapter.notifyDataSetChanged();
             }
         });
     }
@@ -84,6 +113,8 @@ public class MainActivity extends AppCompatActivity
             public void onProgressChanged(SeekBar seekBar, int i, boolean b)
             {
                 tv_j_red.setText("Red:    " + i);
+
+                red = i;
 
                 if(i < 128)
                 {
@@ -120,6 +151,8 @@ public class MainActivity extends AppCompatActivity
             {
                 tv_j_green.setText("Green: " + i);
 
+                green = i;
+
                 if(i < 128)
                 {
                     isDarkGreen = true;
@@ -154,6 +187,8 @@ public class MainActivity extends AppCompatActivity
             public void onProgressChanged(SeekBar seekBar, int i, boolean b)
             {
                 tv_j_blue.setText("Blue:   " + i);
+
+                blue = i;
 
                 if(i < 128)
                 {
@@ -198,6 +233,7 @@ public class MainActivity extends AppCompatActivity
             blueHex = "0" + blueHex;
         }
 
+        //if the display is dark, set the text to white
         if(isDarkRed && isDarkGreen && isDarkBlue)
         {
             tv_j_red.setTextColor(Color.parseColor("#FFFFFF"));
@@ -215,8 +251,46 @@ public class MainActivity extends AppCompatActivity
 
         tv_j_hex.setText("Hex Representation:   " + redHex + greenHex + blueHex);
 
+        //update background color
         View view = this.getWindow().getDecorView();
         view.setBackgroundColor(Color.parseColor("#"+redHex+greenHex+blueHex));
     }
 
+    public void resetView()
+    {
+        sb_j_red.setProgress(255);
+        sb_j_green.setProgress(255);
+        sb_j_blue.setProgress(255);
+
+        tv_j_red.setText("Red:    255");
+        tv_j_green.setText("Green: 255");
+        tv_j_blue.setText("Blue:   255");
+        tv_j_hex.setText("Hex Representation:   FFFFFF");
+
+        View view = this.getWindow().getDecorView();
+        view.setBackgroundColor((Color.parseColor("#FFFFFF")));
+    }
+
+    public void fillListView()
+    {
+        adapter = new SavedColorsListAdapter(this, listOfSavedColors);
+
+        //list view now has adapter "adapter"
+        lv_j_colors.setAdapter(adapter);
+    }
+
+    public void listClickEventHandler()
+    {
+        lv_j_colors.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                //if the user clicks on an object in the list
+                //then change the seekbars to the list contents
+
+
+            }
+        });
+    }
 }
