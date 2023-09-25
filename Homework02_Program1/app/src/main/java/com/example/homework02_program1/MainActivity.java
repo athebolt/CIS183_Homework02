@@ -23,6 +23,9 @@ public class MainActivity extends AppCompatActivity
     TextView tv_j_hex;
     Button btn_j_saveColor;
     ListView lv_j_colors;
+    String red;
+    String green;
+    String blue;
     String redHex;
     String greenHex;
     String blueHex;
@@ -68,6 +71,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 //Log.d("Button Pressed","yes");
+                SavedColor savedColor = new SavedColor(red, green, blue, redHex+greenHex+blueHex);
             }
         });
     }
