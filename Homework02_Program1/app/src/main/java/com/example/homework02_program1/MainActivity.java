@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SeekBar;
@@ -56,6 +57,9 @@ public class MainActivity extends AppCompatActivity
         btn_j_saveColor = findViewById(R.id.btn_v_saveColor);
         lv_j_colors     = findViewById(R.id.lv_v_colors);
 
+        //allows list to be clicked
+        lv_j_colors.setClickable(true);
+
         //set default to white
         red = 255;
         green = 255;
@@ -76,6 +80,7 @@ public class MainActivity extends AppCompatActivity
         redSeekbarEventHandler();
         greenSeekbarEventHandler();
         blueSeekbarEventHandler();
+        listClickEventHandler();
 
         //display list
         fillListView();
@@ -281,15 +286,18 @@ public class MainActivity extends AppCompatActivity
 
     public void listClickEventHandler()
     {
-        lv_j_colors.setOnClickListener(new View.OnClickListener()
+        lv_j_colors.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
-            public void onClick(View view)
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
             {
+                //Log.d("List clicked", "test");
+
                 //if the user clicks on an object in the list
                 //then change the seekbars to the list contents
-
-
+                sb_j_red.setProgress(listOfSavedColors.get(i).getRed());
+                sb_j_green.setProgress(listOfSavedColors.get(i).getGreen());
+                sb_j_blue.setProgress(listOfSavedColors.get(i).getBlue());
             }
         });
     }
